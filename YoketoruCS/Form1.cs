@@ -19,6 +19,13 @@ namespace YoketoruCS
         }
         State nextState = State.Title;
         State currentState = State.None;
+
+        int score;
+        int timer;
+        int hightscore = 100;
+        int StartTimer => 200;
+        const int CStartTimer = 200;
+
         public Form1()
         {
             InitializeComponent();
@@ -50,20 +57,29 @@ namespace YoketoruCS
                     labelGameover.Visible = false;
                     buttonTitle.Visible = false;
                     labelClear.Visible = false;
+                    labelHighScore.Visible = true;
+                    tempPlayer.Visible = false;
+                    labelCopyright.Visible = true;
                     break;
 
                 case State.Game:
                     labelTiltle.Visible = false;
                     buttonStart.Visible = false;
+                    labelHighScore.Visible = false;
+                    labelCopyright.Visible = false;
+                    score = 0;
+                    timer = StartTimer;
                     break;
                 case State.GameOver:
                     labelGameover.Visible = true;
                     buttonTitle.Visible = true;
+                    labelHighScore.Visible = true;
                     break;
 
                 case State.Clear:
                     labelClear.Visible = true;
                     buttonTitle.Visible = true;
+                    labelHighScore.Visible = true;
                     break;
             }
         }
