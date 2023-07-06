@@ -8,13 +8,17 @@ namespace YoketoruCS
         [DllImport("user32.dll")]
         public static extern short GetAsyncKeyState(int vKey);
 
+        static int ScoreMax => 99999;
+        static int SpeedMax = 10;
+        static int PointRate => 100;
+
         static int PlayerMax => 1;
-        static int Itemmax => 3;
+        static int ItemMax => 3;
         static int ObstacleMax => 3;
         static int PlayerIndex => 0;
         static int ObstacleIndex => PlayerIndex + PlayerMax;
         static int ItemIndex => ObstacleIndex + ObstacleMax;
-        static int LabelMax => ItemIndex + Itemmax;
+        static int LabelMax => ItemIndex + ItemMax;
         Label[] chrLabels = new Label[LabelMax];
         int itemCount;
 
@@ -22,9 +26,6 @@ namespace YoketoruCS
         int[] vy = new int[LabelMax];
 
         static Random random = new Random();
-
-        static int SpeedMax = 10;
-        static int PointRate => 100;
 
         //列挙子enum
         enum State
@@ -116,6 +117,7 @@ namespace YoketoruCS
                     labelHighScore.Visible = false;
                     labelCopyright.Visible = true;
                     score = 0;
+                    itemCount = ItemMax;
                     timer = StartTimer;
                     for (int i = ObstacleIndex; i < vx.Length; i++)
                     {
@@ -215,8 +217,14 @@ namespace YoketoruCS
                     }
                     else
                     {
-                        // TODO アイテム
+                        // アイテム
                         AddScore(timer * PointRate);
+                        itemCount--;
+                        chrLabels[i].Visible = false;
+                        if (itemCount <= 0) 
+                        {
+                            nextState |= State.Clear;
+                        }
                     }
                 }
             }
@@ -256,8 +264,6 @@ namespace YoketoruCS
             return (index >= ObstacleIndex)
                 && (index < ItemIndex);
         }
-
-        static int ScoreMax => 99999;
 
         void AddScore(int point)
         {
