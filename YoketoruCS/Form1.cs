@@ -223,7 +223,7 @@ namespace YoketoruCS
                         chrLabels[i].Visible = false;
                         if (itemCount <= 0) 
                         {
-                            nextState |= State.Clear;
+                            nextState = State.Clear;
                         }
                     }
                 }
