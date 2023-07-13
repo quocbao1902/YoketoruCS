@@ -117,12 +117,14 @@ namespace YoketoruCS
                     labelHighScore.Visible = false;
                     labelCopyright.Visible = true;
                     score = 0;
+                    UpdateScore();
                     itemCount = ItemMax;
                     timer = StartTimer;
                     for (int i = ObstacleIndex; i < vx.Length; i++)
                     {
                         vx[i] = random.Next(-SpeedMax, SpeedMax + 1);
                         vy[i] = random.Next(-SpeedMax, SpeedMax + 1);
+                        chrLabels[i].Visible = true;
                     }
                     RandomObstacleAndItemPosition();
                     break;
@@ -187,6 +189,10 @@ namespace YoketoruCS
         {
             for (int i = ObstacleIndex; i < chrLabels.Length; i++)
             {
+                // 非表示のやつは処理しない
+                if (!chrLabels[i].Visible) continue;
+
+
                 chrLabels[i].Left += vx[i];
                 chrLabels[i].Top += vy[i];
 
@@ -214,6 +220,7 @@ namespace YoketoruCS
                     {
                         //障害物にぶつかった
                         nextState = State.GameOver;
+                        updateHighscore();
                     }
                     else
                     {
@@ -224,6 +231,7 @@ namespace YoketoruCS
                         if (itemCount <= 0) 
                         {
                             nextState = State.Clear;
+                            updateHighscore();
                         }
                     }
                 }
@@ -276,6 +284,12 @@ namespace YoketoruCS
         void UpdateScore()
         {
             labelScore.Text = $"{score:00000}";
+        }
+
+        void updateHighscore()
+        {
+            hightscore= Math.Max(hightscore, score);
+            labelHighScore.Text = $"High Score: {hightscore:00000}";
         }
     }
 }
